@@ -2,62 +2,95 @@ const gameWindow = document.getElementById("gameWindow");
 
 const hero = document.createElement("div");
 
-const enemy = document.createElement("div");
+const enemyArr = [];
 
-enemy.id = "enemy";
+let gameLvl = 0;
 
 hero.id = "hero";
+
+class Enemy {
+  constructor(level, id) {
+    this.id = id;
+    this.level = level;
+  }
+}
 
 heroobj = { lvl: 5, clicked: false };
 
 enemyobj = { lvl: 3, clicked: false };
 
 gameWindow.appendChild(hero);
-gameWindow.appendChild(enemy);
 
 hero.innerHTML = heroobj.lvl;
-enemy.innerHTML = enemyobj.lvl;
 
-hero.style.height = "50px";
-hero.style.width = "50px";
-hero.style.backgroundColor = "black";
-hero.style.color = "white";
-hero.style.position = "relative";
-hero.style.top = "490px";
-hero.style.left = "50px";
-hero.style.display = "flex";
-hero.style.justifyContent = "center";
-hero.style.alignItems = "center";
-
-enemy.style.height = "50px";
-enemy.style.width = "50px";
-enemy.style.backgroundColor = "red";
-enemy.style.position = "relative";
-enemy.style.color = "white";
-enemy.style.top = "440px";
-enemy.style.left = "690px";
-enemy.style.display = "flex";
-enemy.style.justifyContent = "center";
-enemy.style.alignItems = "center";
+hero.classList.add("hero");
 
 hero.addEventListener("click", () => {
   heroobj.clicked = true;
   console.log(heroobj);
 });
 
-enemy.addEventListener("click", () => {
-  console.log("enemyclicked");
-  if (heroobj.clicked) {
-    if (heroobj.lvl > enemyobj.lvl) {
-      heroobj.lvl += enemyobj.lvl;
-      console.log(heroobj);
+// enemy1.addEventListener("click", () => {
+//   console.log("enemyclicked");
+//   if (heroobj.clicked) {
+//     if (heroobj.lvl > enemyobj.lvl) {
+//       heroobj.lvl += enemyobj.lvl;
+//       console.log(heroobj);
 
+//       hero.innerHTML = heroobj.lvl;
+//       gameWindow.removeChild(enemy1);
+//       gameLvl++;
+//     } else {
+//       gameWindow.insertAdjacentHTML("beforebegin", "<h1>Game Over</h1>");
+//     }
+//   } else {
+//     console.log("clickherofirst");
+//   }
+// });
+
+for (let i = 0; i < gameLvl + 5; i++) {
+  let level = enemyArr.push(
+    new Enemy(Math.floor(Math.random() * gameLvl) + 1, i)
+  );
+}
+let generateEnemies = function () {
+  for (let i = 0; i < enemyArr.length; i++) {
+    let top = 490 - 100 * i;
+
+    let newEnemy = document.createElement("div");
+    newEnemy.classList.add("enemy");
+
+    newEnemy.style.top += top + "px";
+    newEnemy.innerHTML = enemyArr[i].level;
+    gameWindow.appendChild(newEnemy);
+    newEnemy.id = i;
+    newEnemy.onclick = function () {
+      enemyClick(this.id);
+    };
+  }
+};
+
+generateEnemies();
+
+console.log(enemyArr);
+
+let enemyClick = function (enemyid) {
+  console.log(enemyid);
+  if (heroobj.clicked) {
+    console.log(enemyid);
+    if (enemyArr[enemyid].level < heroobj.lvl) {
+      console.log("hello");
+      heroobj.lvl += enemyArr[enemyid].level;
       hero.innerHTML = heroobj.lvl;
-      gameWindow.removeChild(enemy);
+      gameWindow.removeChild(document.getElementById(enemyid));
+      gameLvl++;
+      let enemyIndex = enemyArr.findIndex(({ id }) => id == enemyid);
+      enemyArr.splice(enemyIndex, 1);
+      heroobj.clicked = false;
     } else {
       gameWindow.insertAdjacentHTML("beforebegin", "<h1>Game Over</h1>");
     }
   } else {
     console.log("clickherofirst");
   }
-});
+};

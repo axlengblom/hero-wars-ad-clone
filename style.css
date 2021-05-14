@@ -14,3 +14,29 @@
   transform: translate(-50%, -50%);
   border: 5px solid black;
 }
+
+.enemy {
+  height: 50px;
+  width: 50px;
+  background-color: red;
+  position: absolute;
+  color: white;
+  top: 490px;
+  left: 690px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero {
+  height: 50px;
+  width: 50px;
+  background-color: black;
+  position: relative;
+  color: white;
+  top: 490px;
+  left: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
