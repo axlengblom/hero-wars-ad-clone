@@ -30,24 +30,6 @@ hero.addEventListener("click", () => {
   console.log(heroobj);
 });
 
-// enemy1.addEventListener("click", () => {
-//   console.log("enemyclicked");
-//   if (heroobj.clicked) {
-//     if (heroobj.lvl > enemyobj.lvl) {
-//       heroobj.lvl += enemyobj.lvl;
-//       console.log(heroobj);
-
-//       hero.innerHTML = heroobj.lvl;
-//       gameWindow.removeChild(enemy1);
-//       gameLvl++;
-//     } else {
-//       gameWindow.insertAdjacentHTML("beforebegin", "<h1>Game Over</h1>");
-//     }
-//   } else {
-//     console.log("clickherofirst");
-//   }
-// });
-
 for (let i = 0; i < gameLvl + 5; i++) {
   let level = enemyArr.push(
     new Enemy(Math.floor(Math.random() * gameLvl) + 1, i)
@@ -65,6 +47,7 @@ let generateEnemies = function () {
     gameWindow.appendChild(newEnemy);
     newEnemy.id = i;
     newEnemy.onclick = function () {
+      console.log(enemyArr[this.id].level);
       enemyClick(this.id);
     };
   }
@@ -75,9 +58,7 @@ generateEnemies();
 console.log(enemyArr);
 
 let enemyClick = function (enemyid) {
-  console.log(enemyid);
   if (heroobj.clicked) {
-    console.log(enemyid);
     if (enemyArr[enemyid].level < heroobj.lvl) {
       console.log("hello");
       heroobj.lvl += enemyArr[enemyid].level;
