@@ -30,12 +30,19 @@ hero.addEventListener("click", () => {
   console.log(heroobj);
 });
 
-for (let i = 0; i < gameLvl + 5; i++) {
-  let level = enemyArr.push(
-    new Enemy(Math.floor(Math.random() * gameLvl) + 1, i)
-  );
-}
 let generateEnemies = function () {
+  for (let i = 0; i < gameLvl + 1; i++) {
+    if (i == 0) {
+      enemyArr.push(new Enemy(Math.floor(heroobj.lvl / 2), i));
+    } else if (i == 1) {
+      enemyArr.push(new Enemy(Math.floor(enemyArr[i - 1].level * 3), i));
+    } else {
+      enemyArr.push(
+        new Enemy(Math.floor(enemyArr[i - 1].level * Math.random() * 2), i)
+      );
+    }
+  }
+
   for (let i = 0; i < enemyArr.length; i++) {
     let top = 490 - 100 * i;
 
@@ -47,8 +54,10 @@ let generateEnemies = function () {
     gameWindow.appendChild(newEnemy);
     newEnemy.id = i;
     newEnemy.onclick = function () {
-      console.log(enemyArr[this.id].level);
-      enemyClick(this.id);
+      console.log(this.id);
+      let found = enemyArr.find(({ id }) => id == this.id);
+      console.log(found);
+      enemyClick(found);
     };
   }
 };
@@ -57,17 +66,25 @@ generateEnemies();
 
 console.log(enemyArr);
 
-let enemyClick = function (enemyid) {
+let enemyClick = function (enemy) {
   if (heroobj.clicked) {
-    if (enemyArr[enemyid].level < heroobj.lvl) {
+    if (enemy.level < heroobj.lvl) {
       console.log("hello");
-      heroobj.lvl += enemyArr[enemyid].level;
+      heroobj.lvl += enemy.level;
       hero.innerHTML = heroobj.lvl;
-      gameWindow.removeChild(document.getElementById(enemyid));
-      gameLvl++;
-      let enemyIndex = enemyArr.findIndex(({ id }) => id == enemyid);
+      gameWindow.removeChild(document.getElementById(enemy.id));
+
+      let enemyIndex = enemyArr.findIndex(({ id }) => id == enemy.id);
       enemyArr.splice(enemyIndex, 1);
-      heroobj.clicked = false;
+      //   heroobj.clicked = false;
+      console.log(gameLvl);
+      if (enemyArr.length == 0) {
+        if (gameLvl < 4) {
+          gameLvl++;
+        }
+
+        generateEnemies();
+      }
     } else {
       gameWindow.insertAdjacentHTML("beforebegin", "<h1>Game Over</h1>");
     }
@@ -75,3 +92,5 @@ let enemyClick = function (enemyid) {
     console.log("clickherofirst");
   }
 };
+
+let enemyLevelGeneration = function () {};
