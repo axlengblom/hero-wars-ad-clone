@@ -68,7 +68,7 @@ console.log(enemyArr);
 
 let enemyClick = function (enemy) {
   if (heroobj.clicked) {
-    if (enemy.level < heroobj.lvl) {
+    if (enemy.level <= heroobj.lvl) {
       console.log("hello");
       heroobj.lvl += enemy.level;
       hero.innerHTML = heroobj.lvl;
